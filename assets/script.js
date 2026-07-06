@@ -28,70 +28,7 @@ const GITHUB_URL = "github.com/Davidcastanom";
 
 let ultimoRegistro = null;
 
-// ─── Firma digital (canvas) ──────────────────────────
-const sigCanvas = document.getElementById("sigCanvas");
-const sigCtx = sigCanvas.getContext("2d");
-const sigClear = document.getElementById("sigClear");
-let sigDataURL = null;
-let sigIsDrawing = false;
-
-function redimFirma() {
-  const rect = sigCanvas.parentElement.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  sigCanvas.width = rect.width * dpr;
-  sigCanvas.height = 130 * dpr;
-  sigCtx.scale(dpr, dpr);
-  sigCtx.strokeStyle = "#17261f";
-  sigCtx.lineWidth = 2;
-  sigCtx.lineCap = "round";
-  sigCtx.lineJoin = "round";
-}
-
-function limpiarFirma() {
-  sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
-  sigDataURL = null;
-}
-
-function posFirma(e) {
-  const rect = sigCanvas.getBoundingClientRect();
-  if (e.touches) return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
-  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-}
-
-function empezarFirma(e) {
-  e.preventDefault();
-  sigIsDrawing = true;
-  const p = posFirma(e);
-  sigCtx.beginPath();
-  sigCtx.moveTo(p.x, p.y);
-}
-
-function dibujarFirma(e) {
-  e.preventDefault();
-  if (!sigIsDrawing) return;
-  const p = posFirma(e);
-  sigCtx.lineTo(p.x, p.y);
-  sigCtx.stroke();
-  sigCtx.beginPath();
-  sigCtx.moveTo(p.x, p.y);
-}
-
-function terminarFirma() {
-  sigIsDrawing = false;
-  sigDataURL = sigCanvas.toDataURL("image/png");
-}
-
-redimFirma();
-sigCanvas.addEventListener("mousedown", empezarFirma);
-sigCanvas.addEventListener("mousemove", dibujarFirma);
-sigCanvas.addEventListener("mouseup", terminarFirma);
-sigCanvas.addEventListener("mouseleave", terminarFirma);
-sigCanvas.addEventListener("touchstart", empezarFirma, { passive: false });
-sigCanvas.addEventListener("touchmove", dibujarFirma, { passive: false });
-sigCanvas.addEventListener("touchend", terminarFirma, { passive: false });
-sigCanvas.addEventListener("touchcancel", terminarFirma, { passive: false });
-sigClear.addEventListener("click", limpiarFirma);
-window.addEventListener("resize", () => { limpiarFirma(); redimFirma(); });
+// (la firma se captura como texto desde el input name="firma" en el submit)
 
 // ─── Generar PDF con jsPDF ────────────────────────────
 function generarPDF(r) {
@@ -207,13 +144,9 @@ function generarPDF(r) {
   doc.setFontSize(9.5);
   doc.setTextColor(100);
   doc.text("Firma digital:", margin, y);
-  if (r.firmaImg) {
-    doc.addImage(r.firmaImg, "PNG", 55, y - 6, 45, 14);
-  } else {
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(23, 38, 31);
-    doc.text(r.firma, 55, y);
-  }
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(23, 38, 31);
+  doc.text(r.firma, 55, y);
 
   // ── Footer ──
   y += 12;
@@ -282,11 +215,7 @@ function mostrarConfirmacion(registro, correoExitoso) {
   document.getElementById("rCedula").textContent = registro.cedula;
   document.getElementById("rTelefono").textContent = registro.telefono;
   document.getElementById("rFecha").textContent = registro.fecha;
-  document.getElementById("rFirma").textContent = "";
-  const firmaImgEl = document.getElementById("rFirmaImg");
-  if (registro.firmaImg) {
-    firmaImgEl.innerHTML = '<img src="' + registro.firmaImg + '" alt="Firma" style="max-width:180px;height:auto;vertical-align:middle">';
-  }
+  document.getElementById("rFirma").textContent = registro.firma;
 
   doneNombre.textContent = registro.nombre;
   stampFecha.textContent = registro.fecha;
@@ -304,18 +233,35 @@ function mostrarConfirmacion(registro, correoExitoso) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function validarFormulario() {
+  const checks = form.querySelectorAll('input[type="checkbox"]');
+  for (const c of checks) {
+    if (!c.checked) return false;
+  }
+  const inputs = form.querySelectorAll('input[type="text"], input[type="tel"]');
+  for (const inp of inputs) {
+    if (!inp.value.trim()) return false;
+  }
+  return true;
+}
+
 // ─── Submit ───────────────────────────────────────────
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  if (!validarFormulario()) {
+    alert("Completá todos los campos y marcá todas las casillas para continuar.");
+    return;
+  }
 
   const data = new FormData(form);
   const nombre = data.get("nombre").trim();
   const cedula = data.get("cedula").trim();
   const emprendimiento = data.get("emprendimiento").trim();
   const telefono = data.get("telefono").trim();
-  const firmaImg = sigDataURL;
+  const firma = data.get("firma").trim();
 
-  ultimoRegistro = { nombre, cedula, emprendimiento, telefono, firma: nombre, firmaImg, fecha: obtenerFecha() };
+  ultimoRegistro = { nombre, cedula, emprendimiento, telefono, firma, fecha: obtenerFecha() };
 
   generarBtn.disabled = true;
   generarBtn.textContent = "Procesando…";
@@ -344,8 +290,6 @@ form.addEventListener("submit", async (e) => {
 volverBtn.addEventListener("click", () => {
   mostrarFormulario();
   form.reset();
-  limpiarFirma();
-  redimFirma();
   fechaHoy.textContent = obtenerFecha();
   document.getElementById("partyCliente").textContent = "(completa tus datos)";
 });
