@@ -14,7 +14,8 @@ prestador del servicio y el cliente.
 | **Contrato bilateral** | Muestra ambas partes (prestador + cliente) en pantalla y en el PDF |
 | **Branding del prestador** | Barra con nombre, autor y enlace a GitHub |
 | **Vista previa en vivo** | El nombre del cliente se actualiza al escribir en "Partes" |
-| **PDF profesional** | Comprobante con logo, partes, datos y texto legal |
+| **PDF profesional** | Comprobante con logo, partes, datos, texto legal y firma dibujada |
+| **Firma digital** | Pad de dibujo táctil + mouse, se incrusta como imagen en el PDF |
 | **Auto-descarga + botón manual** | El PDF se descarga solo a los 2 segundos, con botón de respaldo |
 | **Copia por correo** | Llega un email al prestador con todos los datos vía Web3Forms |
 | **Responsive mobile-first** | Funciona en celulares, tablets y escritorio |
