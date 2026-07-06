@@ -4,7 +4,7 @@
    país y sin espacios, signos ni el símbolo "+".
    Ejemplo Colombia: 57 más el número -> "573001234567"
    ============================================================ */
-const NUMERO_WHATSAPP = "573001234567";
+const NUMERO_WHATSAPP = "573113231038";
 
 const form = document.getElementById("consentForm");
 const formView = document.getElementById("formView");
