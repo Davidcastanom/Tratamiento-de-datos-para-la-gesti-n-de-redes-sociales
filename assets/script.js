@@ -7,9 +7,9 @@
       {{telefono}}, {{fecha}}, {{firma}}
    4. Reemplaza las 3 constantes de abajo
    ============================================================ */
-const EMAILJS_PUBLIC_KEY  = "TU_PUBLIC_KEY";   // User ID (en Settings → API Keys)
-const EMAILJS_SERVICE_ID  = "TU_SERVICE_ID";   // Service ID (en Email Services)
-const EMAILJS_TEMPLATE_ID = "TU_TEMPLATE_ID";  // Template ID (en Email Templates)
+const EMAILJS_PUBLIC_KEY  = "MgfeW0bf3AGad7zir";   // User ID (en Settings → API Keys)
+const EMAILJS_SERVICE_ID  = "service_2ge726w";   // Service ID (en Email Services)
+const EMAILJS_TEMPLATE_ID = "service_2ge726w";  // Template ID (en Email Templates)
 
 const form = document.getElementById("consentForm");
 const formView = document.getElementById("formView");
