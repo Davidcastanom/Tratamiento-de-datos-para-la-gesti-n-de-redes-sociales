@@ -1,38 +1,50 @@
 # Consentimiento para gestión de redes sociales
 
 Formulario web simple (HTML + CSS + JS, sin backend) para que tu cliente
-autorice, desde su celular, la recuperación y gestión de sus cuentas de
-Facebook e Instagram. Al confirmar, se descarga un comprobante en PDF y
-te llega una copia por correo electrónico.
+autorice desde su celular la recuperación y gestión de sus cuentas de
+Facebook e Instagram. Diseñado como **contrato bilateral** entre el
+prestador del servicio y el cliente.
 
 **Sitio en vivo:** https://davidcastanom.github.io/Tratamiento-de-datos-para-la-gesti-n-de-redes-sociales/
+
+## Funcionalidades
+
+| Funcionalidad | Detalle |
+|---|---|
+| **Contrato bilateral** | Muestra ambas partes (prestador + cliente) en pantalla y en el PDF |
+| **Branding del prestador** | Barra con nombre, autor y enlace a GitHub |
+| **Vista previa en vivo** | El nombre del cliente se actualiza al escribir en "Partes" |
+| **PDF profesional** | Comprobante con logo, partes, datos y texto legal |
+| **Auto-descarga + botón manual** | El PDF se descarga solo a los 2 segundos, con botón de respaldo |
+| **Copia por correo** | Llega un email al prestador con todos los datos vía Web3Forms |
+| **Responsive mobile-first** | Funciona en celulares, tablets y escritorio |
+| **Comprobante imprimible** | Oculto en pantalla, visible al imprimir (Ctrl+P) |
+| **Sin backend** | Todo corre en el navegador, no necesita servidor ni base de datos |
+| **Sin registros de pago** | Web3Forms es gratis (250 envíos/mes), jsPDF funciona offline |
 
 ## Uso rápido
 
 1. Registrate gratis en **[web3forms.com](https://web3forms.com)** y copiá tu Access Key.
-2. Abrí `assets/script.js` y pegá la Access Key en la línea 5.
+2. Abrí `assets/script.js`, línea 7, y pegá la Access Key.
 3. Abrí `index.html` en el navegador para probar.
 4. Subí a GitHub Pages para tenerlo en línea.
 
-## Documentación completa
+## Personalización
 
-▶ **Para personalizar el formulario** (cambiar el tipo de consentimiento,
-agregar campos, modificar colores, editar el PDF, etc.) leé:
-
-➡ **[DOCUMENTACION.md](./DOCUMENTACION.md)** — manual paso a paso con
-ejemplos y referencia línea por línea.
+▶ **[DOCUMENTACION.md](./DOCUMENTACION.md)** — manual paso a paso para
+adaptar el formulario a cualquier tipo de autorización (uso de imagen,
+afiliación, tratamiento de datos general, etc.).
 
 ## Estructura
 
 ```
 consentimiento-redes/
-├── index.html            →  Formulario
+├── index.html            →  Formulario y estructura
 ├── assets/
-│   ├── style.css         →  Estilos responsive
-│   └── script.js         →  Lógica (PDF, correo, validación)
+│   ├── style.css         →  Estilos responsive (mobile-first)
+│   └── script.js         →  Lógica: PDF, correo, validación
 ├── DOCUMENTACION.md      →  Manual de personalización
-├── README.md
-└── .gitignore
+└── README.md
 ```
 
 ## Tecnologías
