@@ -1,8 +1,10 @@
 /* ============================================================
    CONFIGURACIÓN
-   Poné tu correo para recibir las copias de los consentimientos
+   1. Registrate gratis en https://web3forms.com
+   2. Copiá tu Access Key (la recibís por email)
+   3. Pegala abajo
    ============================================================ */
-const MI_CORREO = "esteban7005808@gmail.com"; // <-- CAMBIALO
+const ACCESS_KEY = "poné-tu-access-key-acá"; // <-- WEB3FORMS ACCESS KEY
 
 const form = document.getElementById("consentForm");
 const formView = document.getElementById("formView");
@@ -164,18 +166,18 @@ function descargarPDF(blob, filename) {
   setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
-// ─── Enviar copia por FormSubmit (gratis, sin registro) ─
+// ─── Enviar copia por Web3Forms (gratis, 250/mes) ──────
 async function enviarCorreo(registro) {
-  const resp = await fetch("https://formsubmit.co/ajax/" + MI_CORREO, {
+  const resp = await fetch("https://api.web3forms.com/submit", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
     body: JSON.stringify({
-      _subject: "Nuevo consentimiento - " + registro.emprendimiento,
-      _captcha: "false",
-      _template: "table",
+      access_key: ACCESS_KEY,
+      subject: "Nuevo consentimiento - " + registro.emprendimiento,
+      from_name: registro.nombre,
       nombre: registro.nombre,
       cedula: registro.cedula,
       emprendimiento: registro.emprendimiento,
@@ -185,7 +187,7 @@ async function enviarCorreo(registro) {
     }),
   });
   const data = await resp.json();
-  if (!resp.ok || data.success !== true) {
+  if (!data.success) {
     throw new Error(data.message || "Error al enviar el correo");
   }
 }

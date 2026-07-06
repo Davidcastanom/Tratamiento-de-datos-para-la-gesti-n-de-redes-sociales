@@ -9,9 +9,10 @@ te llega una copia por correo electrónico.
 
 ## Uso rápido
 
-1. Abrí `assets/script.js` y cambiá `MI_CORREO` (línea 5) por tu correo real.
-2. Abrí `index.html` en el navegador para probar.
-3. Subí a GitHub Pages para tenerlo en línea.
+1. Registrate gratis en **[web3forms.com](https://web3forms.com)** y copiá tu Access Key.
+2. Abrí `assets/script.js` y pegá la Access Key en la línea 5.
+3. Abrí `index.html` en el navegador para probar.
+4. Subí a GitHub Pages para tenerlo en línea.
 
 ## Documentación completa
 
@@ -39,7 +40,7 @@ consentimiento-redes/
 - HTML5 + CSS3 (vanilla, mobile-first)
 - JavaScript (vanilla)
 - [jsPDF](https://github.com/parallax/jsPDF) — PDF en el navegador
-- [FormSubmit](https://formsubmit.co/) — envío de correos (gratis, sin registro)
+- [Web3Forms](https://web3forms.com) — envío de correos (gratis, 250/mes)
 - GitHub Pages — hosting
 
 ## Repositorio

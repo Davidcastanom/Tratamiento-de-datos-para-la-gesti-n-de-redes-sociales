@@ -419,43 +419,37 @@ doc.addImage(logoDataUrl, "PNG", 20, 15, 30, 10);
 
 ## 8. Configurar el correo que recibe las copias
 
-Único paso: abrir `assets/script.js` y cambiar la línea 5:
+El proyecto usa [Web3Forms](https://web3forms.com/) (gratis, 250 envíos/mes,
+sin servidor). En lugar de un correo, usá una **Access Key**.
+
+### Obtener la Access Key
+
+1. Ingresá a **[web3forms.com](https://web3forms.com/)**.
+2. Ingresá tu correo y creá la cuenta.
+3. Te llega un email con tu **Access Key** (un código como `4a8b2c...`).
+4. Abrí `assets/script.js` y en la línea 5 reemplazá el valor:
 
 ```js
-const MI_CORREO = "esteban7005808@gmail.com"; // <-- PONER TU CORREO ACÁ
+const ACCESS_KEY = "4a8b2c...";   // <-- TU ACCESS KEY DE WEB3FORMS
 ```
-
-El envío usa [FormSubmit](https://formsubmit.co/) que es gratuito y no requiere
-registro. Solo necesita un correo real.
-
-### Confirmar el correo (paso obligatorio)
-
-En el **primer envío** con un correo nuevo, FormSubmit envía un email de
-verificación a esa dirección. **Hay que hacer clic en el enlace de
-confirmación** para activar el envío. Sin ese paso los correos no se entregan.
-
-> ✅ Revisá la bandeja de entrada y la carpeta de **spam/promociones**.
-> Si no aparece, probá enviando el formulario una vez desde el sitio en vivo
-> (no desde `file://`) para que FormSubmit genere el email de confirmación.
 
 ### Parámetros opcionales
 
 Se pueden agregar al `body` del JSON en `enviarCorreo()`:
 
 ```js
-_captcha: "false",          // desactiva el captcha
-_template: "table",         // formato de tabla en el correo
-_subject: "Nuevo consentimiento - " + registro.emprendimiento,  // asunto
+subject: "Nuevo consentimiento - " + registro.emprendimiento,
+from_name: registro.nombre,
 ```
 
 ### Solución de problemas
 
 | Problema | Causa posible | Solución |
 |---|---|---|
-| No llega el correo | Email no confirmado en FormSubmit | Revisar spam, buscar el email de verificación de FormSubmit y hacer clic en el enlace |
+| No llega el correo | Access Key incorrecta o no verificada | Verificá que la key en `script.js` sea la misma que te envió Web3Forms |
 | No llega el correo | Prueba desde `file://` (doble clic al HTML) | Abrir con un servidor local (`npx serve .`) o probar desde GitHub Pages |
-| Error `Unexpected token <` | FormSubmit devolvió HTML en vez de JSON | Falta el header `Accept: application/json` o el email es inválido |
-| El captcha bloquea | FormSubmit activa reCAPTCHA por defecto | Agregar `_captcha: "false"` al body del JSON |
+| Error `"success": false` | Access Key inválida o cuota excedida | Revisá tu key en el dashboard de Web3Forms |
+| Error de red | Sin conexión a Internet | El PDF se descarga igual sin conexión. El correo requiere Internet |
 
 ---
 
@@ -612,7 +606,7 @@ Se puede cambiar la sección "Partes" para que refleje dos empresas:
 | Cambiar colores | `assets/style.css` | 1-14 |
 | Cambiar el texto del PDF | `assets/script.js` | 125-131 |
 | Agregar un campo nuevo | `index.html` + `script.js` | varias |
-| Cambiar el correo destino | `assets/script.js` | 5 |
+| Cambiar la Access Key (email) | `assets/script.js` | 5 |
 | Cambiar el nombre del PDF | `assets/script.js` | 229 |
 | Publicar cambios | `git push` | — |
 
