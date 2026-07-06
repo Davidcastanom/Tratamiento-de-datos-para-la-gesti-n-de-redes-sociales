@@ -72,6 +72,8 @@ function dibujarFirma(e) {
   const p = posFirma(e);
   sigCtx.lineTo(p.x, p.y);
   sigCtx.stroke();
+  sigCtx.beginPath();
+  sigCtx.moveTo(p.x, p.y);
 }
 
 function terminarFirma(e) {
