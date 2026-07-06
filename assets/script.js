@@ -88,6 +88,33 @@ async function subirPDF(blob) {
 }
 
 // ─── Submit ───────────────────────────────────────────
+// ─── Mostrar/ocultar vistas (más robusto que hidden) ──
+function mostrarFormulario() {
+  doneView.style.display = "none";
+  formView.style.display = "";
+  formView.hidden = false;
+  doneView.hidden = true;
+}
+
+function mostrarConfirmacion(registro) {
+  formView.style.display = "none";
+  doneView.style.display = "";
+  formView.hidden = true;
+  doneView.hidden = false;
+
+  document.getElementById("rEmprendimiento").textContent = registro.emprendimiento;
+  document.getElementById("rNombre").textContent = registro.nombre;
+  document.getElementById("rCedula").textContent = registro.cedula;
+  document.getElementById("rTelefono").textContent = registro.telefono;
+  document.getElementById("rFecha").textContent = registro.fecha;
+  document.getElementById("rFirma").textContent = registro.firma;
+
+  doneNombre.textContent = registro.nombre;
+  stampFecha.textContent = registro.fecha;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -140,25 +167,8 @@ Firma digital: ${firma}`;
   }
 });
 
-function mostrarConfirmacion(registro) {
-  document.getElementById("rEmprendimiento").textContent = registro.emprendimiento;
-  document.getElementById("rNombre").textContent = registro.nombre;
-  document.getElementById("rCedula").textContent = registro.cedula;
-  document.getElementById("rTelefono").textContent = registro.telefono;
-  document.getElementById("rFecha").textContent = registro.fecha;
-  document.getElementById("rFirma").textContent = registro.firma;
-
-  doneNombre.textContent = registro.nombre;
-  stampFecha.textContent = registro.fecha;
-
-  formView.hidden = true;
-  doneView.hidden = false;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
 volverBtn.addEventListener("click", () => {
-  doneView.hidden = true;
-  formView.hidden = false;
+  mostrarFormulario();
   form.reset();
   fechaHoy.textContent = fechaLarga;
 });

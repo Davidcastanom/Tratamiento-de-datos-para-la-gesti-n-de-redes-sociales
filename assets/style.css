@@ -258,6 +258,9 @@ h1 {
   line-height: 1.5;
 }
 
+/* Asegura que hidden funcione pese a otras reglas display */
+[hidden] { display: none !important; }
+
 /* --- Pantalla de confirmación con sello --- */
 .sheet--stamp {
   text-align: center;
