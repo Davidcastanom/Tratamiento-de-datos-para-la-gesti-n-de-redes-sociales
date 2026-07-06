@@ -4,7 +4,7 @@
    2. Copiá tu Access Key (la recibís por email)
    3. Pegala abajo
    ============================================================ */
-const ACCESS_KEY = "poné-tu-access-key-acá"; // <-- WEB3FORMS ACCESS KEY
+const ACCESS_KEY = "82b98f57-2405-42e4-961f-806433a2f1fb"; // <-- WEB3FORMS ACCESS KEY
 
 const form = document.getElementById("consentForm");
 const formView = document.getElementById("formView");
