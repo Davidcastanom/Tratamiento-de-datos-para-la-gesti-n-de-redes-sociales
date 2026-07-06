@@ -8,7 +8,9 @@
   --accent: #b5482e;
   --gold: #c99a3e;
   --line: #d8e0d8;
-  --radius: 14px;
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
 }
 
 * { box-sizing: border-box; }
@@ -24,7 +26,7 @@ body {
   font-family: "Work Sans", system-ui, sans-serif;
   display: flex;
   justify-content: center;
-  padding: 32px 16px 64px;
+  padding: clamp(12px, 3vw, 40px) clamp(10px, 2.5vw, 32px) 48px;
 }
 
 h1, h2, .eyebrow {
@@ -33,19 +35,19 @@ h1, h2, .eyebrow {
 
 .sheet {
   width: 100%;
-  max-width: 560px;
+  max-width: 580px;
   background: var(--surface);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   border: 1px solid var(--line);
   box-shadow: 0 24px 48px -28px rgba(15, 38, 31, 0.28);
-  padding: 40px 32px 36px;
+  padding: clamp(22px, 4vw, 44px) clamp(18px, 3.5vw, 36px) clamp(26px, 4vw, 40px);
 }
 
 .sheet__header { margin-bottom: 28px; }
 
 .eyebrow {
   display: inline-block;
-  font-size: 12.5px;
+  font-size: clamp(11px, 1.6vw, 13px);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
@@ -54,7 +56,7 @@ h1, h2, .eyebrow {
 }
 
 h1 {
-  font-size: 26px;
+  font-size: clamp(20px, 3.6vw, 28px);
   font-weight: 600;
   line-height: 1.25;
   margin: 0 0 12px;
@@ -62,16 +64,16 @@ h1 {
 }
 
 .lede {
-  font-size: 15.5px;
+  font-size: clamp(14px, 2vw, 16px);
   line-height: 1.55;
   color: var(--ink-soft);
   margin: 0;
 }
 
-.block { margin-bottom: 30px; }
+.block { margin-bottom: clamp(22px, 3.5vw, 32px); }
 
 .block__title {
-  font-size: 15px;
+  font-size: clamp(14px, 1.8vw, 16px);
   font-weight: 600;
   color: var(--primary);
   margin: 0 0 14px;
@@ -79,40 +81,43 @@ h1 {
   border-bottom: 1px solid var(--line);
 }
 
+/* --- Campos del formulario: siempre 1 columna --- */
+
 .grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-size: 13.5px;
+  gap: 5px;
+  font-size: clamp(13px, 1.5vw, 14px);
   color: var(--ink-soft);
   font-weight: 500;
-  margin-bottom: 14px;
 }
-
-.grid .field { margin-bottom: 0; }
 
 .field input {
   font-family: inherit;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--ink);
-  padding: 10px 12px;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background: #fbfaf6;
   outline: none;
   transition: border-color .15s ease, box-shadow .15s ease;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .field input:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(15,76,67,0.12);
 }
+
+/* --- Checkbox cards --- */
 
 .consent-list {
   list-style: none;
@@ -121,7 +126,7 @@ h1 {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .consent-list li {
@@ -131,15 +136,16 @@ h1 {
 
 .check {
   display: grid;
-  grid-template-columns: 22px 1fr;
-  gap: 12px;
+  grid-template-columns: 24px 1fr;
+  gap: 14px;
   align-items: start;
   cursor: pointer;
-  padding: 12px 14px 12px 12px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  padding: clamp(12px, 2vw, 16px) clamp(14px, 2vw, 18px);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
   background: #fbfaf6;
   transition: border-color .15s ease, background .15s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .check:has(input:checked) {
@@ -150,19 +156,20 @@ h1 {
 .check input {
   position: absolute;
   opacity: 0;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
 }
 
 .mark {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 6px;
   border: 1.5px solid var(--ink-soft);
   margin-top: 2px;
   position: relative;
   flex-shrink: 0;
   background: #fff;
+  transition: background .15s ease, border-color .15s ease;
 }
 
 .check input:checked + .mark {
@@ -173,12 +180,12 @@ h1 {
 .check input:checked + .mark::after {
   content: "";
   position: absolute;
-  left: 6px;
-  top: 2px;
-  width: 5px;
+  left: 6.5px;
+  top: 2.5px;
+  width: 6px;
   height: 10px;
   border: solid #fff;
-  border-width: 0 2px 2px 0;
+  border-width: 0 2.5px 2.5px 0;
   transform: rotate(40deg);
 }
 
@@ -188,33 +195,37 @@ h1 {
 }
 
 .text {
-  font-size: 14.5px;
+  font-size: clamp(13.5px, 1.6vw, 15px);
   line-height: 1.5;
   color: var(--ink);
+  min-height: 24px;
+  display: flex;
+  align-items: center;
 }
 
 .hint {
-  font-size: 13px;
+  font-size: clamp(12px, 1.4vw, 13.5px);
   color: var(--ink-soft);
   margin: 10px 0 0;
 }
 
 .submit-btn {
   width: 100%;
-  padding: 15px 18px;
-  border-radius: 10px;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
   border: none;
   background: var(--primary);
   color: #fff;
   font-family: "Work Sans", sans-serif;
-  font-size: 15.5px;
+  font-size: clamp(15px, 1.8vw, 16.5px);
   font-weight: 600;
   cursor: pointer;
   transition: background .15s ease, transform .1s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .submit-btn:hover { background: var(--primary-dark); }
-.submit-btn:active { transform: scale(0.99); }
+.submit-btn:active { transform: scale(0.98); }
 
 .submit-btn--ghost {
   background: transparent;
@@ -231,18 +242,19 @@ h1 {
   background: none;
   border: none;
   color: var(--ink-soft);
-  font-size: 13.5px;
+  font-size: clamp(13px, 1.4vw, 14px);
   text-decoration: underline;
-  margin-top: 14px;
+  margin-top: 16px;
   cursor: pointer;
   font-family: inherit;
+  padding: 8px;
 }
 
 .privacy-note {
-  font-size: 12.5px;
+  font-size: clamp(12px, 1.3vw, 13px);
   color: var(--ink-soft);
   text-align: center;
-  margin-top: 12px;
+  margin-top: 14px;
   line-height: 1.5;
 }
 
@@ -255,14 +267,14 @@ h1 {
 }
 
 .sheet--stamp h2 {
-  font-size: 22px;
+  font-size: clamp(18px, 3vw, 24px);
   color: var(--primary-dark);
   margin: 4px 0 10px;
 }
 
 .stamp {
-  width: 148px;
-  height: 148px;
+  width: clamp(120px, 20vw, 160px);
+  height: clamp(120px, 20vw, 160px);
   margin: 6px auto 18px;
   position: relative;
   color: var(--accent);
@@ -284,13 +296,13 @@ h1 {
 }
 
 .stamp__label span {
-  font-size: 17px;
+  font-size: clamp(14px, 2.4vw, 18px);
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 
 .stamp__label strong {
-  font-size: 12px;
+  font-size: clamp(11px, 1.4vw, 13px);
   font-weight: 500;
   margin-top: 4px;
   font-family: "Work Sans", sans-serif;
@@ -318,85 +330,17 @@ h1 {
   .receipt h3 { font-family: "Fraunces", serif; color: #0f4c43; }
 }
 
-/* --- Mobile responsive --- */
+/* --- Escritorio: más ancho y 2 columnas --- */
+@media (min-width: 700px) {
+  body { padding: 40px 32px 64px; }
 
-@media (max-width: 700px) {
-  .sheet--stamp h2 { font-size: 19px; }
-}
+  .sheet { max-width: 620px; }
 
-@media (max-width: 640px) {
-  body { padding: 18px 16px 48px; }
-
-  .sheet { padding: 28px 22px 30px; }
-
-  .grid { grid-template-columns: 1fr; gap: 12px; }
-
-  h1 { font-size: 23px; }
-
-  .lede { font-size: 14.5px; }
-
-  .check {
-    padding: 14px 16px 14px 14px;
-    gap: 14px;
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
   }
 
-  .text { font-size: 14px; }
-
-  .consent-list { gap: 12px; }
-}
-
-@media (max-width: 480px) {
-  body { padding: 14px 16px 40px; }
-
-  .sheet { padding: 24px 18px 26px; border-radius: 12px; }
-
-  h1 { font-size: 21px; }
-
-  .lede { font-size: 14px; }
-
-  .text { font-size: 13.5px; }
-
-  .field { font-size: 13px; }
-
-  .field input { font-size: 16px; padding: 12px 12px; }
-
-  .check { padding: 12px 14px 12px 12px; gap: 12px; }
-
-  .submit-btn { padding: 14px 16px; font-size: 15px; }
-
-  .block { margin-bottom: 24px; }
-
-  .sheet--stamp h2 { font-size: 18px; }
-
-  .stamp { width: 128px; height: 128px; }
-
-  .stamp__label span { font-size: 15px; }
-}
-
-@media (max-width: 360px) {
-  body { padding: 10px 12px 36px; }
-
-  .sheet { padding: 18px 14px 22px; border-radius: 10px; }
-
-  h1 { font-size: 18px; }
-
-  .lede { font-size: 13px; }
-
-  .text { font-size: 12.5px; }
-
-  .field input { font-size: 15px; padding: 10px 10px; }
-
-  .check { padding: 10px 10px 10px 10px; gap: 10px; }
-
-  .consent-list { gap: 10px; }
-
-  .submit-btn { padding: 12px 14px; font-size: 14px; }
-
-  .stamp { width: 108px; height: 108px; }
-
-  .stamp__label span { font-size: 13px; }
-}
-
-@media (min-width: 641px) and (max-width: 860px) {
-  body { padding: 28px 24px 56px; }
+  .field input { font-size: 15px; padding: 11px 14px; }
 }
