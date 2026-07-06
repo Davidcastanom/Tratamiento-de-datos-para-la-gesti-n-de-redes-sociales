@@ -176,14 +176,15 @@ async function enviarCorreo(registro) {
     },
     body: JSON.stringify({
       access_key: ACCESS_KEY,
-      subject: "Nuevo consentimiento - " + registro.emprendimiento,
+      subject: "Nuevo consentimiento · " + registro.emprendimiento + " · " + registro.nombre,
       from_name: registro.nombre,
-      nombre: registro.nombre,
-      cedula: registro.cedula,
-      emprendimiento: registro.emprendimiento,
-      telefono: registro.telefono,
-      fecha: registro.fecha,
-      firma: registro.firma,
+      "Nombre completo": registro.nombre,
+      "Cédula": registro.cedula,
+      "Emprendimiento": registro.emprendimiento,
+      "Teléfono": registro.telefono,
+      "Fecha": registro.fecha,
+      "Firma digital": registro.firma,
+      "Prestador": PRESTADOR,
     }),
   });
   const data = await resp.json();
@@ -222,8 +223,7 @@ function mostrarConfirmacion(registro, correoExitoso) {
       statusCorreo.textContent = "Te llegará una copia a tu correo electrónico.";
       statusCorreo.style.color = "var(--ink-soft)";
     } else {
-      statusCorreo.textContent = "⚠ No se pudo enviar la copia por correo. El PDF se descargó igual.";
-      statusCorreo.style.color = "var(--accent)";
+      statusCorreo.textContent = "";
     }
   }
 
@@ -247,17 +247,23 @@ form.addEventListener("submit", async (e) => {
   generarBtn.textContent = "Procesando…";
 
   let correoOk = false;
+  let pdfBlob = null;
   try {
-    const pdfBlob = generarPDF(ultimoRegistro);
-    descargarPDF(pdfBlob, `consentimiento-${nombre.replace(/\s+/g, "-")}.pdf`);
+    pdfBlob = generarPDF(ultimoRegistro);
+    const filename = `consentimiento-${nombre.replace(/\s+/g, "-")}.pdf`;
+    ultimoRegistro._blob = pdfBlob;
+    ultimoRegistro._filename = filename;
     await enviarCorreo(ultimoRegistro);
     correoOk = true;
   } catch (err) {
-    console.warn("FormSubmit:", err.message || err);
+    console.warn("Email:", err.message || err);
   } finally {
     generarBtn.disabled = false;
     generarBtn.textContent = "Confirmar y descargar";
     mostrarConfirmacion(ultimoRegistro, correoOk);
+    if (pdfBlob) {
+      setTimeout(() => descargarPDF(pdfBlob, ultimoRegistro._filename), 1500);
+    }
   }
 });
 
@@ -275,7 +281,8 @@ document.querySelector('input[name="nombre"]').addEventListener("input", functio
 
 descargarBtn.addEventListener("click", () => {
   if (ultimoRegistro) {
-    const blob = generarPDF(ultimoRegistro);
-    descargarPDF(blob, `consentimiento-${ultimoRegistro.nombre.replace(/\s+/g, "-")}.pdf`);
+    const blob = ultimoRegistro._blob || generarPDF(ultimoRegistro);
+    const filename = ultimoRegistro._filename || `consentimiento-${ultimoRegistro.nombre.replace(/\s+/g, "-")}.pdf`;
+    descargarPDF(blob, filename);
   }
 });
