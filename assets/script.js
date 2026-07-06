@@ -248,8 +248,9 @@ form.addEventListener("submit", async (e) => {
   generarBtn.textContent = "Procesando…";
 
   let correoOk = false;
+  let pdfBlob = null;
   try {
-    const pdfBlob = generarPDF(ultimoRegistro);
+    pdfBlob = generarPDF(ultimoRegistro);
     const filename = `consentimiento-${nombre.replace(/\s+/g, "-")}.pdf`;
     ultimoRegistro._blob = pdfBlob;
     ultimoRegistro._filename = filename;
@@ -261,6 +262,9 @@ form.addEventListener("submit", async (e) => {
     generarBtn.disabled = false;
     generarBtn.textContent = "Confirmar y descargar";
     mostrarConfirmacion(ultimoRegistro, correoOk);
+    if (pdfBlob) {
+      setTimeout(() => descargarPDF(pdfBlob, ultimoRegistro._filename), 2000);
+    }
   }
 });
 
