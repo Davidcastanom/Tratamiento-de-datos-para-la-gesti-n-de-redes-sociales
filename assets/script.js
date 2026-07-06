@@ -76,8 +76,7 @@ function dibujarFirma(e) {
   sigCtx.moveTo(p.x, p.y);
 }
 
-function terminarFirma(e) {
-  e.preventDefault();
+function terminarFirma() {
   sigIsDrawing = false;
   sigDataURL = sigCanvas.toDataURL("image/png");
 }
@@ -89,7 +88,8 @@ sigCanvas.addEventListener("mouseup", terminarFirma);
 sigCanvas.addEventListener("mouseleave", terminarFirma);
 sigCanvas.addEventListener("touchstart", empezarFirma, { passive: false });
 sigCanvas.addEventListener("touchmove", dibujarFirma, { passive: false });
-sigCanvas.addEventListener("touchend", terminarFirma);
+sigCanvas.addEventListener("touchend", terminarFirma, { passive: false });
+sigCanvas.addEventListener("touchcancel", terminarFirma, { passive: false });
 sigClear.addEventListener("click", limpiarFirma);
 window.addEventListener("resize", () => { limpiarFirma(); redimFirma(); });
 
