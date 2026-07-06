@@ -20,55 +20,134 @@ const fechaLarga = hoy.toLocaleDateString("es-CO", {
 });
 fechaHoy.textContent = fechaLarga;
 
+const PRESTADOR = "Flujo Base — David Castaño";
+const GITHUB_URL = "github.com/Davidcastanom";
+
 let ultimoRegistro = null;
 
 // ─── Generar PDF con jsPDF ────────────────────────────
 function generarPDF(r) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
+  const pageW = 210;
+  const margin = 20;
+  const col1 = margin;
+  const col2 = 75;
+  const colW = 170;
 
+  // ── Encabezado ──
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(17);
-  doc.text("Comprobante de autorización", 105, 20, { align: "center" });
+  doc.setFontSize(16);
+  doc.setTextColor(15, 76, 67);
+  doc.text("FLUJO BASE", col1, 20);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor(100);
+  doc.text("por David Castaño", col1, 26);
+  doc.text("github.com/Davidcastanom", col1, 31);
 
+  // ── Título ──
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(14);
+  doc.setTextColor(23, 38, 31);
+  doc.text("Comprobante de autorización", pageW / 2, 26, { align: "center" });
+
+  // ── Línea ──
   doc.setDrawColor(15, 76, 67);
   doc.setLineWidth(0.5);
-  doc.line(20, 27, 190, 27);
+  doc.line(margin, 36, pageW - margin, 36);
 
+  // ── Partes del contrato ──
+  let y = 46;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(181, 72, 46);
+  doc.text("PARTES", margin, y);
+  y += 6;
+
+  // Prestador
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9.5);
+  doc.setTextColor(15, 76, 67);
+  doc.text("PRESTADOR", col1, y);
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(11);
+  doc.setTextColor(23, 38, 31);
+  doc.text("Flujo Base — David Castaño", col1 + 28, y);
+  y += 5;
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(15, 76, 67);
+  doc.text("CLIENTE", col1, y);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(23, 38, 31);
+  doc.text(r.nombre, col1 + 28, y);
 
+  y += 12;
+
+  // ── Datos del cliente ──
+  doc.setDrawColor(200);
+  doc.line(margin, y, pageW - margin, y);
+  y += 8;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.setTextColor(15, 76, 67);
+  doc.text("Datos del cliente", margin, y);
+  y += 7;
+
+  doc.setFontSize(9.5);
   const campos = [
     ["Emprendimiento", r.emprendimiento],
     ["Nombre completo", r.nombre],
     ["Cédula", r.cedula],
     ["Teléfono", r.telefono],
     ["Fecha", r.fecha],
-    ["Firma digital", r.firma],
   ];
 
-  let y = 38;
   campos.forEach(([label, value]) => {
     doc.setFont("helvetica", "bold");
-    doc.text(`${label}:`, 20, y);
+    doc.setTextColor(100);
+    doc.text(`${label}:`, col1, y);
     doc.setFont("helvetica", "normal");
-    doc.text(value, 65, y);
-    y += 8;
+    doc.setTextColor(23, 38, 31);
+    doc.text(value, col2, y);
+    y += 7;
   });
 
+  // ── Cuerpo legal ──
   y += 6;
   doc.setDrawColor(200);
-  doc.line(20, y, 190, y);
+  doc.line(margin, y, pageW - margin, y);
   y += 10;
 
-  doc.setFontSize(9.5);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor(74, 88, 79);
   const texto =
-    "La persona arriba identificada autorizó la recuperación, " +
-    "actualización y gestión de sus cuentas de Facebook e Instagram, " +
-    "incluyendo el manejo confidencial de credenciales y la conservación " +
-    "de contactos y seguidores existentes.";
-  const lines = doc.splitTextToSize(texto, 170);
-  doc.text(lines, 20, y);
+    "El cliente arriba identificado autoriza a Flujo Base (David Castaño) " +
+    "la recuperación, actualización y gestión de sus cuentas de Facebook " +
+    "e Instagram, incluyendo el manejo confidencial de sus credenciales " +
+    "y la conservación de contactos y seguidores existentes.";
+  const lines = doc.splitTextToSize(texto, colW);
+  doc.text(lines, margin, y);
+
+  // ── Firma ──
+  y += lines.length * 5 + 10;
+  doc.setDrawColor(200);
+  doc.line(margin, y, pageW - margin, y);
+  y += 8;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9.5);
+  doc.setTextColor(100);
+  doc.text("Firma digital:", margin, y);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(23, 38, 31);
+  doc.text(r.firma, 55, y);
+
+  // ── Footer ──
+  y += 12;
+  doc.setFontSize(8);
+  doc.setTextColor(180);
+  doc.text("Generado desde " + GITHUB_URL, margin, y);
 
   return doc.output("blob");
 }
@@ -162,6 +241,12 @@ volverBtn.addEventListener("click", () => {
   mostrarFormulario();
   form.reset();
   fechaHoy.textContent = fechaLarga;
+  document.getElementById("partyCliente").textContent = "(completa tus datos)";
+});
+
+// ─── Actualizar el nombre del cliente en "Partes" en vivo ──
+document.querySelector('input[name="nombre"]').addEventListener("input", function () {
+  document.getElementById("partyCliente").textContent = this.value.trim() || "(completa tus datos)";
 });
 
 descargarBtn.addEventListener("click", () => {

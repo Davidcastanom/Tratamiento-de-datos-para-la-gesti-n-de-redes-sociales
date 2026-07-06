@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Autorización de tratamiento de datos y gestión de redes</title>
+<title>Flujo Base · Autorización de redes sociales</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,6 +14,11 @@
   <main class="sheet" id="formView">
 
     <header class="sheet__header">
+      <div class="provider">
+        <span class="provider__badge">FLUJO BASE</span>
+        <span class="provider__by">por David Castaño</span>
+        <a class="provider__link" href="https://github.com/Davidcastanom" target="_blank" rel="noopener">github.com/Davidcastanom</a>
+      </div>
       <span class="eyebrow">Autorización · Manejo de redes sociales</span>
       <h1>Consentimiento para la gestión de tus redes</h1>
       <p class="lede">
@@ -23,6 +28,22 @@
     </header>
 
     <form id="consentForm" novalidate>
+
+      <section class="block parties">
+        <h2 class="block__title">Partes</h2>
+        <div class="parties__grid">
+          <div class="party">
+            <span class="party__tag">PRESTADOR</span>
+            <strong class="party__name">Flujo Base</strong>
+            <span class="party__detail">David Castaño</span>
+            <span class="party__detail">github.com/Davidcastanom</span>
+          </div>
+          <div class="party">
+            <span class="party__tag">CLIENTE</span>
+            <strong class="party__name" id="partyCliente">(completa tus datos)</strong>
+          </div>
+        </div>
+      </section>
 
       <section class="block">
         <h2 class="block__title">1. Tus datos</h2>
@@ -53,7 +74,7 @@
             <label class="check">
               <input type="checkbox" required>
               <span class="mark"></span>
-              <span class="text">Autorizo a que se recupere y se actualice el usuario y la contraseña de mi(s) cuenta(s) de <strong>Facebook</strong> e <strong>Instagram</strong>.</span>
+              <span class="text">Autorizo a <strong>Flujo Base</strong> a recuperar y actualizar el usuario y contraseña de mi(s) cuenta(s) de <strong>Facebook</strong> e <strong>Instagram</strong>.</span>
             </label>
           </li>
           <li>
@@ -74,7 +95,7 @@
             <label class="check">
               <input type="checkbox" required>
               <span class="mark"></span>
-              <span class="text">Sé que puedo pedir la devolución de mis accesos actualizados en cualquier momento.</span>
+              <span class="text">Sé que puedo solicitar en cualquier momento la devolución de mis accesos actualizados.</span>
             </label>
           </li>
         </ol>
@@ -90,7 +111,7 @@
       </section>
 
       <button type="submit" class="submit-btn">Confirmar y descargar PDF</button>
-      <p class="privacy-note">Al confirmar, se descargará automáticamente tu comprobante en PDF y te llegará una copia por correo electrónico.</p>
+      <p class="privacy-note">Al confirmar, se descargará tu comprobante en PDF y te llegará una copia por correo electrónico.</p>
     </form>
   </main>
 
@@ -106,22 +127,25 @@
       </div>
     </div>
     <h2>Consentimiento registrado</h2>
-    <p class="lede">Gracias, <span id="doneNombre"></span>. Tu comprobante se ha descargado automáticamente. También te llegará una copia al correo electrónico que tengas registrado.</p>
+    <p class="lede">Gracias, <span id="doneNombre"></span>. Tu comprobante PDF se ha descargado automáticamente. En breve te llegará una copia a tu correo electrónico.</p>
     <button class="submit-btn submit-btn--ghost" id="descargarBtn">Descargar comprobante</button>
-    <button class="link-btn" id="volverBtn">Volver al formulario</button>
+    <button class="link-btn" id="volverBtn">← Volver al formulario</button>
   </main>
 
   <!-- Comprobante imprimible, oculto en pantalla -->
   <section class="receipt" id="receipt">
-    <h3>Comprobante de autorización</h3>
-    <p><strong>Emprendimiento:</strong> <span id="rEmprendimiento"></span></p>
+    <h3>Comprobante de autorización — Flujo Base</h3>
+    <p><strong>Prestador:</strong> Flujo Base — David Castaño</p>
+    <p><strong>Cliente (emprendimiento):</strong> <span id="rEmprendimiento"></span></p>
     <p><strong>Nombre:</strong> <span id="rNombre"></span></p>
     <p><strong>Cédula:</strong> <span id="rCedula"></span></p>
     <p><strong>Teléfono:</strong> <span id="rTelefono"></span></p>
     <p><strong>Fecha:</strong> <span id="rFecha"></span></p>
     <hr>
-    <p>La persona arriba identificada autorizó la recuperación, actualización y gestión de sus cuentas de Facebook e Instagram, incluyendo el manejo confidencial de credenciales y la conservación de contactos y seguidores existentes.</p>
+    <p>El cliente arriba identificado autorizó a <strong>Flujo Base (David Castaño)</strong> la recuperación, actualización y gestión de sus cuentas de Facebook e Instagram, incluyendo el manejo confidencial de credenciales y la conservación de contactos y seguidores existentes.</p>
     <p><strong>Firma digital:</strong> <span id="rFirma"></span></p>
+    <hr>
+    <p style="font-size:11px;color:#888">Generado desde github.com/Davidcastanom</p>
   </section>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
