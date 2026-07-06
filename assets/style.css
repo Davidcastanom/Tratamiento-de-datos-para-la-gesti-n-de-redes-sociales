@@ -1,0 +1,325 @@
+:root {
+  --bg: #eef3ec;
+  --surface: #fffefb;
+  --ink: #17261f;
+  --ink-soft: #4a584f;
+  --primary: #0f4c43;
+  --primary-dark: #0b342e;
+  --accent: #b5482e;
+  --gold: #c99a3e;
+  --line: #d8e0d8;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(15,76,67,0.06), transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(181,72,46,0.05), transparent 42%);
+  color: var(--ink);
+  font-family: "Work Sans", system-ui, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 32px 16px 64px;
+}
+
+h1, h2, .eyebrow {
+  font-family: "Fraunces", Georgia, serif;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 560px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 48px -28px rgba(15, 38, 31, 0.28);
+  padding: 40px 32px 36px;
+}
+
+.sheet__header { margin-bottom: 28px; }
+
+.eyebrow {
+  display: inline-block;
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0 0 12px;
+  color: var(--primary-dark);
+}
+
+.lede {
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.block { margin-bottom: 30px; }
+
+.block__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.grid .field { margin-bottom: 0; }
+
+.field input {
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #fbfaf6;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.field input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(15,76,67,0.12);
+}
+
+.consent-list {
+  list-style: none;
+  counter-reset: item;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.consent-list li {
+  counter-increment: item;
+  position: relative;
+}
+
+.check {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 12px;
+  align-items: start;
+  cursor: pointer;
+  padding: 12px 14px 12px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fbfaf6;
+  transition: border-color .15s ease, background .15s ease;
+}
+
+.check:has(input:checked) {
+  border-color: var(--primary);
+  background: rgba(15,76,67,0.06);
+}
+
+.check input {
+  position: absolute;
+  opacity: 0;
+  width: 22px;
+  height: 22px;
+}
+
+.mark {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--ink-soft);
+  margin-top: 2px;
+  position: relative;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.check input:checked + .mark {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.check input:checked + .mark::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(40deg);
+}
+
+.check input:focus-visible + .mark {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.text {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.hint {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 10px 0 0;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 15px 18px;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-family: "Work Sans", sans-serif;
+  font-size: 15.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s ease, transform .1s ease;
+}
+
+.submit-btn:hover { background: var(--primary-dark); }
+.submit-btn:active { transform: scale(0.99); }
+
+.submit-btn--ghost {
+  background: transparent;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+  margin-top: 22px;
+}
+.submit-btn--ghost:hover { background: rgba(15,76,67,0.06); }
+
+.link-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  text-decoration: underline;
+  margin-top: 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.privacy-note {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  text-align: center;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* --- Pantalla de confirmación con sello --- */
+.sheet--stamp {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sheet--stamp h2 {
+  font-size: 22px;
+  color: var(--primary-dark);
+  margin: 4px 0 10px;
+}
+
+.stamp {
+  width: 148px;
+  height: 148px;
+  margin: 6px auto 18px;
+  position: relative;
+  color: var(--accent);
+  animation: stampIn .55s cubic-bezier(.2,1.4,.4,1) both;
+}
+
+.stamp__ring { width: 100%; height: 100%; opacity: 0.85; }
+
+.stamp__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Fraunces", serif;
+  color: var(--accent);
+  transform: rotate(-8deg);
+}
+
+.stamp__label span {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.stamp__label strong {
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 4px;
+  font-family: "Work Sans", sans-serif;
+}
+
+@keyframes stampIn {
+  0% { transform: scale(2.2) rotate(-18deg); opacity: 0; }
+  60% { opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* --- Comprobante imprimible --- */
+.receipt { display: none; }
+
+@media print {
+  body * { visibility: hidden; }
+  .receipt, .receipt * { visibility: visible; }
+  .receipt {
+    display: block;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 40px;
+    font-family: "Work Sans", sans-serif;
+  }
+  .receipt h3 { font-family: "Fraunces", serif; color: #0f4c43; }
+}
+
+@media (max-width: 480px) {
+  .sheet { padding: 28px 20px 30px; }
+  .grid { grid-template-columns: 1fr; }
+  h1 { font-size: 22px; }
+}
