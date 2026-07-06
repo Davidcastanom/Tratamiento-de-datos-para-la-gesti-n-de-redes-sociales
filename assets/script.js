@@ -1,15 +1,8 @@
 /* ============================================================
-   CONFIGURACIÓN EMAILJS
-   1. Regístrate gratis en https://www.emailjs.com/
-   2. Conecta un servicio (Gmail, Outlook, etc.)
-   3. Crea una plantilla con estas variables:
-      {{nombre}}, {{cedula}}, {{emprendimiento}},
-      {{telefono}}, {{fecha}}, {{firma}}
-   4. Reemplaza las 3 constantes de abajo
+   CONFIGURACIÓN
+   Poné tu correo para recibir las copias de los consentimientos
    ============================================================ */
-const EMAILJS_PUBLIC_KEY  = "MgfeW0bf3AGad7zir";   // User ID (en Settings → API Keys)
-const EMAILJS_SERVICE_ID  = "service_2ge726w";   // Service ID (en Email Services)
-const EMAILJS_TEMPLATE_ID = "service_2ge726w";  // Template ID (en Email Templates)
+const MI_CORREO = "tucorreo@ejemplo.com"; // <-- CAMBIALO
 
 const form = document.getElementById("consentForm");
 const formView = document.getElementById("formView");
@@ -92,18 +85,21 @@ function descargarPDF(blob, filename) {
   setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
-// ─── Enviar copia por EmailJS ─────────────────────────
+// ─── Enviar copia por FormSubmit (gratis, sin registro) ─
 async function enviarCorreo(registro) {
-  if (!window.emailjs) return;
-  const datos = {
-    nombre:       registro.nombre,
-    cedula:       registro.cedula,
-    emprendimiento: registro.emprendimiento,
-    telefono:     registro.telefono,
-    fecha:        registro.fecha,
-    firma:        registro.firma,
-  };
-  await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, datos, EMAILJS_PUBLIC_KEY);
+  await fetch("https://formsubmit.co/ajax/" + MI_CORREO, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      _subject: "Nuevo consentimiento - " + registro.emprendimiento,
+      nombre: registro.nombre,
+      cedula: registro.cedula,
+      emprendimiento: registro.emprendimiento,
+      telefono: registro.telefono,
+      fecha: registro.fecha,
+      firma: registro.firma,
+    }),
+  });
 }
 
 // ─── Mostrar/ocultar vistas ───────────────────────────

@@ -16,19 +16,15 @@ consentimiento-redes/
 └── README.md
 ```
 
-## 1. Configurar EmailJS (para recibir copias por correo)
+## 1. Configurar tu correo (para recibir copias)
 
-1. Regístrate gratis en [emailjs.com](https://www.emailjs.com/) (200 correos/mes gratis).
-2. Ve a **Email Services** → conectá tu correo (Gmail, Outlook, etc.).
-3. Ve a **Email Templates** → creá una plantilla con estas variables: `{{nombre}}`, `{{cedula}}`, `{{emprendimiento}}`, `{{telefono}}`, `{{fecha}}`, `{{firma}}`.
-4. Ve a **Account → API Keys** → copiá tu **Public Key**.
-5. Abrí `assets/script.js` y reemplazá las 3 constantes de la línea 9-11:
+Abrí `assets/script.js` y en la línea 10 cambiá `tucorreo@ejemplo.com` por tu correo real:
 
 ```js
-const EMAILJS_PUBLIC_KEY  = "TU_PUBLIC_KEY";
-const EMAILJS_SERVICE_ID  = "TU_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = "TU_TEMPLATE_ID";
+const MI_CORREO = "tuemail@gmail.com";
 ```
+
+No necesitas registrarte en ningún servicio. Los correos se envían a través de [FormSubmit](https://formsubmit.co/) (gratis).
 
 ## 2. Pruébalo localmente
 
@@ -55,7 +51,7 @@ No necesitas servidor: abre `index.html` con doble clic en cualquier navegador.
 | **Diseño responsive** | Mobile-first con `clamp()`, grid fluido, breakpoints para todo tamaño |
 | **PDF automático** | Se genera con `jsPDF` con todos los datos del formulario |
 | **Descarga automática** | El PDF se descarga solo al confirmar, sin servicios externos |
-| **Copia por correo** | EmailJS envía los datos a tu bandeja de entrada |
+| **Copia por correo** | FormSubmit envía los datos a tu bandeja de entrada |
 | **Sin API de pago** | No requiere WhatsApp API ni servicios de pago |
 | **Sin backend** | Todo corre en el navegador, no necesita servidor ni base de datos |
 
@@ -64,7 +60,7 @@ No necesitas servidor: abre `index.html` con doble clic en cualquier navegador.
 - HTML5 + CSS3 (vanilla, mobile-first)
 - JavaScript (ES6+, vanilla)
 - [jsPDF](https://github.com/parallax/jsPDF) (generación de PDF)
-- [EmailJS](https://www.emailjs.com/) (envío de correos)
+- [FormSubmit](https://formsubmit.co/) (envío de correos)
 - GitHub Pages (hosting)
 
 ## Repositorio
