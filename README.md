@@ -27,16 +27,29 @@ No necesitas servidor: solo abre `index.html` con doble clic en cualquier navega
 
 ## 3. Súbelo a GitHub
 
+Esta carpeta ya viene con un repositorio git inicializado (carpeta `.git`) y un primer commit hecho, así que no necesitas correr `git init`. Solo te falta crear el repositorio vacío en GitHub y conectarlo:
+
+1. Entra a [github.com/new](https://github.com/new) y crea un repositorio vacío (sin README, sin licencia).
+2. Copia la URL que te da GitHub (algo como `https://github.com/TU-USUARIO/TU-REPOSITORIO.git`).
+3. Desde esta carpeta, en tu terminal:
+
 ```bash
-git init
-git add .
-git commit -m "Formulario de consentimiento"
-git branch -M main
 git remote add origin https://github.com/TU-USUARIO/TU-REPOSITORIO.git
 git push -u origin main
 ```
 
-(Reemplaza `TU-USUARIO/TU-REPOSITORIO` por los datos de tu repositorio en GitHub.)
+Si tu editor de commits reclama por el nombre/correo (autor), configúralos primero:
+
+```bash
+git config user.name "Tu Nombre"
+git config user.email "tu-correo@ejemplo.com"
+```
+
+Una vez subido, cualquier persona (o tú desde otro computador) puede clonarlo con:
+
+```bash
+git clone https://github.com/TU-USUARIO/TU-REPOSITORIO.git
+```
 
 ## 4. Publícalo con GitHub Pages (para tener un enlace público)
 
