@@ -318,7 +318,7 @@ h1 {
   .receipt h3 { font-family: "Fraunces", serif; color: #0f4c43; }
 }
 
-/* --- Responsive --- */
+/* --- Mobile responsive --- */
 
 @media (max-width: 700px) {
   .sheet--stamp h2 { font-size: 19px; }
