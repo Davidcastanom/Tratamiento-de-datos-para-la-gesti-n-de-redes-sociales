@@ -166,11 +166,16 @@ function descargarPDF(blob, filename) {
 
 // ─── Enviar copia por FormSubmit (gratis, sin registro) ─
 async function enviarCorreo(registro) {
-  await fetch("https://formsubmit.co/ajax/" + MI_CORREO, {
+  const resp = await fetch("https://formsubmit.co/ajax/" + MI_CORREO, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
     body: JSON.stringify({
       _subject: "Nuevo consentimiento - " + registro.emprendimiento,
+      _captcha: "false",
+      _template: "table",
       nombre: registro.nombre,
       cedula: registro.cedula,
       emprendimiento: registro.emprendimiento,
@@ -179,6 +184,10 @@ async function enviarCorreo(registro) {
       firma: registro.firma,
     }),
   });
+  const data = await resp.json();
+  if (!resp.ok || data.success !== true) {
+    throw new Error(data.message || "Error al enviar el correo");
+  }
 }
 
 // ─── Mostrar/ocultar vistas ───────────────────────────
@@ -189,7 +198,7 @@ function mostrarFormulario() {
   doneView.hidden = true;
 }
 
-function mostrarConfirmacion(registro) {
+function mostrarConfirmacion(registro, correoExitoso) {
   formView.style.display = "none";
   doneView.style.display = "";
   formView.hidden = true;
@@ -204,6 +213,17 @@ function mostrarConfirmacion(registro) {
 
   doneNombre.textContent = registro.nombre;
   stampFecha.textContent = registro.fecha;
+
+  const statusCorreo = document.getElementById("correoStatus");
+  if (statusCorreo) {
+    if (correoExitoso) {
+      statusCorreo.textContent = "Te llegará una copia a tu correo electrónico.";
+      statusCorreo.style.color = "var(--ink-soft)";
+    } else {
+      statusCorreo.textContent = "⚠ No se pudo enviar la copia por correo. El PDF se descargó igual.";
+      statusCorreo.style.color = "var(--accent)";
+    }
+  }
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -224,16 +244,18 @@ form.addEventListener("submit", async (e) => {
   generarBtn.disabled = true;
   generarBtn.textContent = "Procesando…";
 
+  let correoOk = false;
   try {
     const pdfBlob = generarPDF(ultimoRegistro);
     descargarPDF(pdfBlob, `consentimiento-${nombre.replace(/\s+/g, "-")}.pdf`);
     await enviarCorreo(ultimoRegistro);
-  } catch {
-    // Si el correo falla, el cliente igual descargó el PDF
+    correoOk = true;
+  } catch (err) {
+    console.warn("FormSubmit:", err.message || err);
   } finally {
     generarBtn.disabled = false;
     generarBtn.textContent = "Confirmar y descargar";
-    mostrarConfirmacion(ultimoRegistro);
+    mostrarConfirmacion(ultimoRegistro, correoOk);
   }
 });
 
