@@ -1,10 +1,15 @@
 /* ============================================================
-   CONFIGURA AQUÍ
-   Reemplaza con tu número de WhatsApp completo, con código de
-   país y sin espacios, signos ni el símbolo "+".
-   Ejemplo Colombia: 57 más el número -> "573001234567"
+   CONFIGURACIÓN EMAILJS
+   1. Regístrate gratis en https://www.emailjs.com/
+   2. Conecta un servicio (Gmail, Outlook, etc.)
+   3. Crea una plantilla con estas variables:
+      {{nombre}}, {{cedula}}, {{emprendimiento}},
+      {{telefono}}, {{fecha}}, {{firma}}
+   4. Reemplaza las 3 constantes de abajo
    ============================================================ */
-const NUMERO_WHATSAPP = "573113231038";
+const EMAILJS_PUBLIC_KEY  = "TU_PUBLIC_KEY";   // User ID (en Settings → API Keys)
+const EMAILJS_SERVICE_ID  = "TU_SERVICE_ID";   // Service ID (en Email Services)
+const EMAILJS_TEMPLATE_ID = "TU_TEMPLATE_ID";  // Template ID (en Email Templates)
 
 const form = document.getElementById("consentForm");
 const formView = document.getElementById("formView");
@@ -75,20 +80,33 @@ function generarPDF(r) {
   return doc.output("blob");
 }
 
-// ─── Subir PDF a file.io ──────────────────────────────
-async function subirPDF(blob) {
-  const fd = new FormData();
-  fd.append("file", blob, "consentimiento-redes.pdf");
-
-  const res = await fetch("https://file.io", { method: "POST", body: fd });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const data = await res.json();
-  if (!data.success) throw new Error("file.io no aceptó el archivo");
-  return data.link;
+// ─── Descargar PDF automáticamente ────────────────────
+function descargarPDF(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
-// ─── Submit ───────────────────────────────────────────
-// ─── Mostrar/ocultar vistas (más robusto que hidden) ──
+// ─── Enviar copia por EmailJS ─────────────────────────
+async function enviarCorreo(registro) {
+  if (!window.emailjs) return;
+  const datos = {
+    nombre:       registro.nombre,
+    cedula:       registro.cedula,
+    emprendimiento: registro.emprendimiento,
+    telefono:     registro.telefono,
+    fecha:        registro.fecha,
+    firma:        registro.firma,
+  };
+  await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, datos, EMAILJS_PUBLIC_KEY);
+}
+
+// ─── Mostrar/ocultar vistas ───────────────────────────
 function mostrarFormulario() {
   doneView.style.display = "none";
   formView.style.display = "";
@@ -115,6 +133,7 @@ function mostrarConfirmacion(registro) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+// ─── Submit ───────────────────────────────────────────
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -127,42 +146,18 @@ form.addEventListener("submit", async (e) => {
 
   ultimoRegistro = { nombre, cedula, emprendimiento, telefono, firma, fecha: fechaLarga };
 
-  // Abrir ventana (se abre vacía para esquivar el bloqueo de popup)
-  const popup = window.open("", "_blank");
-
   generarBtn.disabled = true;
-  generarBtn.textContent = "Generando PDF…";
-
-  // Función para lanzar WhatsApp (con o sin link)
-  const abrirWhatsApp = (url) => {
-    if (popup && !popup.closed) {
-      popup.location.href = url;
-    } else {
-      window.location.href = url;
-    }
-  };
-
-  const msgBase = (link) => {
-    const cuerpo =
-`*Autorización de gestión de redes sociales*
-
-Yo, ${nombre} (C.C. ${cedula}), en representación de "${emprendimiento}", autorizo a recuperar, actualizar y gestionar mis cuentas de Facebook e Instagram, incluyendo el manejo confidencial de mis credenciales, conservando mis contactos y seguidores actuales.
-
-Teléfono de contacto: ${telefono}
-Fecha: ${fechaLarga}
-Firma digital: ${firma}`;
-    return link ? `${cuerpo}\n\n📄 Copia digital: ${link}` : cuerpo;
-  };
+  generarBtn.textContent = "Procesando…";
 
   try {
     const pdfBlob = generarPDF(ultimoRegistro);
-    const pdfUrl = await subirPDF(pdfBlob);
-    abrirWhatsApp(`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(msgBase(pdfUrl))}`);
+    descargarPDF(pdfBlob, `consentimiento-${nombre.replace(/\s+/g, "-")}.pdf`);
+    await enviarCorreo(ultimoRegistro);
   } catch {
-    abrirWhatsApp(`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(msgBase(null))}`);
+    // Si el correo falla, el cliente igual descargó el PDF
   } finally {
     generarBtn.disabled = false;
-    generarBtn.textContent = "Confirmar y enviar por WhatsApp";
+    generarBtn.textContent = "Confirmar y descargar";
     mostrarConfirmacion(ultimoRegistro);
   }
 });
@@ -174,5 +169,8 @@ volverBtn.addEventListener("click", () => {
 });
 
 descargarBtn.addEventListener("click", () => {
-  window.print();
+  if (ultimoRegistro) {
+    const blob = generarPDF(ultimoRegistro);
+    descargarPDF(blob, `consentimiento-${ultimoRegistro.nombre.replace(/\s+/g, "-")}.pdf`);
+  }
 });

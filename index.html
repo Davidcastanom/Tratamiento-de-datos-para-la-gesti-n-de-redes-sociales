@@ -89,8 +89,8 @@
         <p class="hint">Fecha de hoy: <strong id="fechaHoy"></strong></p>
       </section>
 
-      <button type="submit" class="submit-btn">Confirmar y enviar por WhatsApp</button>
-      <p class="privacy-note">Al enviar, se abrirá WhatsApp con un mensaje ya redactado dirigido a mí, para que quede como constancia de tu autorización.</p>
+      <button type="submit" class="submit-btn">Confirmar y descargar PDF</button>
+      <p class="privacy-note">Al confirmar, se descargará automáticamente tu comprobante en PDF y te llegará una copia por correo electrónico.</p>
     </form>
   </main>
 
@@ -106,7 +106,7 @@
       </div>
     </div>
     <h2>Consentimiento registrado</h2>
-    <p class="lede">Gracias, <span id="doneNombre"></span>. Se abrió WhatsApp con tu autorización lista para enviar. Confírmalo desde ahí para que quede guardado en la conversación.</p>
+    <p class="lede">Gracias, <span id="doneNombre"></span>. Tu comprobante se ha descargado automáticamente. También te llegará una copia al correo electrónico que tengas registrado.</p>
     <button class="submit-btn submit-btn--ghost" id="descargarBtn">Descargar comprobante</button>
     <button class="link-btn" id="volverBtn">Volver al formulario</button>
   </main>
@@ -124,6 +124,7 @@
     <p><strong>Firma digital:</strong> <span id="rFirma"></span></p>
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="assets/script.js"></script>
 </body>
