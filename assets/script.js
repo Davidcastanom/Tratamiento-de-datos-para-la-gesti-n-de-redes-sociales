@@ -16,11 +16,12 @@ const volverBtn = document.getElementById("volverBtn");
 const descargarBtn = document.getElementById("descargarBtn");
 const generarBtn = document.querySelector(".submit-btn");
 
-const hoy = new Date();
-const fechaLarga = hoy.toLocaleDateString("es-CO", {
-  day: "numeric", month: "long", year: "numeric",
-});
-fechaHoy.textContent = fechaLarga;
+function obtenerFecha() {
+  return new Date().toLocaleDateString("es-CO", {
+    day: "numeric", month: "long", year: "numeric",
+  });
+}
+fechaHoy.textContent = obtenerFecha();
 
 const PRESTADOR = "Flujo Base — David Castaño";
 const GITHUB_URL = "github.com/Davidcastanom";
@@ -241,7 +242,7 @@ form.addEventListener("submit", async (e) => {
   const telefono = data.get("telefono").trim();
   const firma = data.get("firma").trim();
 
-  ultimoRegistro = { nombre, cedula, emprendimiento, telefono, firma, fecha: fechaLarga };
+  ultimoRegistro = { nombre, cedula, emprendimiento, telefono, firma, fecha: obtenerFecha() };
 
   generarBtn.disabled = true;
   generarBtn.textContent = "Procesando…";
@@ -270,7 +271,7 @@ form.addEventListener("submit", async (e) => {
 volverBtn.addEventListener("click", () => {
   mostrarFormulario();
   form.reset();
-  fechaHoy.textContent = fechaLarga;
+  fechaHoy.textContent = obtenerFecha();
   document.getElementById("partyCliente").textContent = "(completa tus datos)";
 });
 
