@@ -14,13 +14,8 @@ prestador del servicio y el cliente.
 | **Contrato bilateral** | Muestra ambas partes (prestador + cliente) en pantalla y en el PDF |
 | **Branding del prestador** | Barra con nombre, autor y enlace a GitHub |
 | **Vista previa en vivo** | El nombre del cliente se actualiza al escribir en "Partes" |
-<<<<<<< HEAD
-| **PDF profesional** | Comprobante con logo, partes, datos, texto legal y firma escrita |
-| **Firma digital** | Pad de dibujo táctil + mouse, se incrusta como imagen en el PDF |
-=======
 | **PDF profesional** | Comprobante con logo, partes, datos, texto legal y firma digital |
 | **Firma digital** | Campo de texto, se envía como dato textual al correo y al PDF |
->>>>>>> ea7b2e7 (docs: update README signature description to text)
 | **Auto-descarga + botón manual** | El PDF se descarga solo a los 2 segundos, con botón de respaldo |
 | **Copia por correo** | Llega un email al prestador con todos los datos vía Web3Forms |
 | **Responsive mobile-first** | Funciona en celulares, tablets y escritorio |
