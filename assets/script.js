@@ -2,7 +2,7 @@
    CONFIGURACIÓN
    Poné tu correo para recibir las copias de los consentimientos
    ============================================================ */
-const MI_CORREO = "tucorreo@ejemplo.com"; // <-- CAMBIALO
+const MI_CORREO = "esteban7005808@gmail.com"; // <-- CAMBIALO
 
 const form = document.getElementById("consentForm");
 const formView = document.getElementById("formView");
