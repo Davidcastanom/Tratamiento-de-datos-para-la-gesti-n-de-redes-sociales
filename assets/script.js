@@ -14,6 +14,7 @@ const stampFecha = document.getElementById("stampFecha");
 const doneNombre = document.getElementById("doneNombre");
 const volverBtn = document.getElementById("volverBtn");
 const descargarBtn = document.getElementById("descargarBtn");
+const generarBtn = document.querySelector(".submit-btn");
 
 const hoy = new Date();
 const fechaLarga = hoy.toLocaleDateString("es-CO", {
@@ -23,7 +24,71 @@ fechaHoy.textContent = fechaLarga;
 
 let ultimoRegistro = null;
 
-form.addEventListener("submit", (e) => {
+// ─── Generar PDF con jsPDF ────────────────────────────
+function generarPDF(r) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(17);
+  doc.text("Comprobante de autorización", 105, 20, { align: "center" });
+
+  doc.setDrawColor(15, 76, 67);
+  doc.setLineWidth(0.5);
+  doc.line(20, 27, 190, 27);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(11);
+
+  const campos = [
+    ["Emprendimiento", r.emprendimiento],
+    ["Nombre completo", r.nombre],
+    ["Cédula", r.cedula],
+    ["Teléfono", r.telefono],
+    ["Fecha", r.fecha],
+    ["Firma digital", r.firma],
+  ];
+
+  let y = 38;
+  campos.forEach(([label, value]) => {
+    doc.setFont("helvetica", "bold");
+    doc.text(`${label}:`, 20, y);
+    doc.setFont("helvetica", "normal");
+    doc.text(value, 65, y);
+    y += 8;
+  });
+
+  y += 6;
+  doc.setDrawColor(200);
+  doc.line(20, y, 190, y);
+  y += 10;
+
+  doc.setFontSize(9.5);
+  const texto =
+    "La persona arriba identificada autorizó la recuperación, " +
+    "actualización y gestión de sus cuentas de Facebook e Instagram, " +
+    "incluyendo el manejo confidencial de credenciales y la conservación " +
+    "de contactos y seguidores existentes.";
+  const lines = doc.splitTextToSize(texto, 170);
+  doc.text(lines, 20, y);
+
+  return doc.output("blob");
+}
+
+// ─── Subir PDF a file.io ──────────────────────────────
+async function subirPDF(blob) {
+  const fd = new FormData();
+  fd.append("file", blob, "consentimiento-redes.pdf");
+
+  const res = await fetch("https://file.io", { method: "POST", body: fd });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  if (!data.success) throw new Error("file.io no aceptó el archivo");
+  return data.link;
+}
+
+// ─── Submit ───────────────────────────────────────────
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const data = new FormData(form);
@@ -35,7 +100,23 @@ form.addEventListener("submit", (e) => {
 
   ultimoRegistro = { nombre, cedula, emprendimiento, telefono, firma, fecha: fechaLarga };
 
-  const mensaje =
+  // Abrir ventana (se abre vacía para esquivar el bloqueo de popup)
+  const popup = window.open("", "_blank");
+
+  generarBtn.disabled = true;
+  generarBtn.textContent = "Generando PDF…";
+
+  // Función para lanzar WhatsApp (con o sin link)
+  const abrirWhatsApp = (url) => {
+    if (popup && !popup.closed) {
+      popup.location.href = url;
+    } else {
+      window.location.href = url;
+    }
+  };
+
+  const msgBase = (link) => {
+    const cuerpo =
 `*Autorización de gestión de redes sociales*
 
 Yo, ${nombre} (C.C. ${cedula}), en representación de "${emprendimiento}", autorizo a recuperar, actualizar y gestionar mis cuentas de Facebook e Instagram, incluyendo el manejo confidencial de mis credenciales, conservando mis contactos y seguidores actuales.
@@ -43,11 +124,20 @@ Yo, ${nombre} (C.C. ${cedula}), en representación de "${emprendimiento}", autor
 Teléfono de contacto: ${telefono}
 Fecha: ${fechaLarga}
 Firma digital: ${firma}`;
+    return link ? `${cuerpo}\n\n📄 Copia digital: ${link}` : cuerpo;
+  };
 
-  const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, "_blank");
-
-  mostrarConfirmacion(ultimoRegistro);
+  try {
+    const pdfBlob = generarPDF(ultimoRegistro);
+    const pdfUrl = await subirPDF(pdfBlob);
+    abrirWhatsApp(`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(msgBase(pdfUrl))}`);
+  } catch {
+    abrirWhatsApp(`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(msgBase(null))}`);
+  } finally {
+    generarBtn.disabled = false;
+    generarBtn.textContent = "Confirmar y enviar por WhatsApp";
+    mostrarConfirmacion(ultimoRegistro);
+  }
 });
 
 function mostrarConfirmacion(registro) {
