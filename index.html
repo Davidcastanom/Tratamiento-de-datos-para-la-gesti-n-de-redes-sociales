@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autorización de tratamiento de datos y gestión de redes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+  <main class="sheet" id="formView">
+
+    <header class="sheet__header">
+      <span class="eyebrow">Autorización · Manejo de redes sociales</span>
+      <h1>Consentimiento para la gestión de tus redes</h1>
+      <p class="lede">
+        Antes de recuperar el acceso y actualizar tus cuentas, necesito tu autorización.
+        Lee cada punto, marca lo que aceptas y firma al final. Toma menos de dos minutos.
+      </p>
+    </header>
+
+    <form id="consentForm" novalidate>
+
+      <section class="block">
+        <h2 class="block__title">1. Tus datos</h2>
+        <div class="grid">
+          <label class="field">
+            <span>Nombre completo</span>
+            <input type="text" name="nombre" required autocomplete="name">
+          </label>
+          <label class="field">
+            <span>Cédula de ciudadanía</span>
+            <input type="text" name="cedula" required inputmode="numeric">
+          </label>
+          <label class="field">
+            <span>Nombre del emprendimiento</span>
+            <input type="text" name="emprendimiento" required>
+          </label>
+          <label class="field">
+            <span>Teléfono de contacto</span>
+            <input type="tel" name="telefono" required inputmode="tel">
+          </label>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2 class="block__title">2. Qué autorizas</h2>
+        <ol class="consent-list">
+          <li>
+            <label class="check">
+              <input type="checkbox" required>
+              <span class="mark"></span>
+              <span class="text">Autorizo a que se recupere y se actualice el usuario y la contraseña de mi(s) cuenta(s) de <strong>Facebook</strong> e <strong>Instagram</strong>.</span>
+            </label>
+          </li>
+          <li>
+            <label class="check">
+              <input type="checkbox" required>
+              <span class="mark"></span>
+              <span class="text">Autorizo la actualización de contenido en mis redes para potenciar mi emprendimiento, <strong>sin perder mis contactos, seguidores ni mensajes actuales</strong>.</span>
+            </label>
+          </li>
+          <li>
+            <label class="check">
+              <input type="checkbox" required>
+              <span class="mark"></span>
+              <span class="text">Entiendo que mis credenciales y contactos se usarán <strong>únicamente</strong> para este fin, se manejarán de forma confidencial y no se compartirán con terceros.</span>
+            </label>
+          </li>
+          <li>
+            <label class="check">
+              <input type="checkbox" required>
+              <span class="mark"></span>
+              <span class="text">Sé que puedo pedir la devolución de mis accesos actualizados en cualquier momento.</span>
+            </label>
+          </li>
+        </ol>
+      </section>
+
+      <section class="block">
+        <h2 class="block__title">3. Tu firma</h2>
+        <label class="field">
+          <span>Escribe tu nombre completo como firma digital</span>
+          <input type="text" name="firma" required placeholder="Firma con tu nombre completo">
+        </label>
+        <p class="hint">Fecha de hoy: <strong id="fechaHoy"></strong></p>
+      </section>
+
+      <button type="submit" class="submit-btn">Confirmar y enviar por WhatsApp</button>
+      <p class="privacy-note">Al enviar, se abrirá WhatsApp con un mensaje ya redactado dirigido a mí, para que quede como constancia de tu autorización.</p>
+    </form>
+  </main>
+
+  <main class="sheet sheet--stamp" id="doneView" hidden>
+    <div class="stamp" id="stamp">
+      <svg viewBox="0 0 200 200" class="stamp__ring">
+        <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" stroke-width="3"/>
+        <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <div class="stamp__label">
+        <span>AUTORIZADO</span>
+        <strong id="stampFecha"></strong>
+      </div>
+    </div>
+    <h2>Consentimiento registrado</h2>
+    <p class="lede">Gracias, <span id="doneNombre"></span>. Se abrió WhatsApp con tu autorización lista para enviar. Confírmalo desde ahí para que quede guardado en la conversación.</p>
+    <button class="submit-btn submit-btn--ghost" id="descargarBtn">Descargar comprobante</button>
+    <button class="link-btn" id="volverBtn">Volver al formulario</button>
+  </main>
+
+  <!-- Comprobante imprimible, oculto en pantalla -->
+  <section class="receipt" id="receipt">
+    <h3>Comprobante de autorización</h3>
+    <p><strong>Emprendimiento:</strong> <span id="rEmprendimiento"></span></p>
+    <p><strong>Nombre:</strong> <span id="rNombre"></span></p>
+    <p><strong>Cédula:</strong> <span id="rCedula"></span></p>
+    <p><strong>Teléfono:</strong> <span id="rTelefono"></span></p>
+    <p><strong>Fecha:</strong> <span id="rFecha"></span></p>
+    <hr>
+    <p>La persona arriba identificada autorizó la recuperación, actualización y gestión de sus cuentas de Facebook e Instagram, incluyendo el manejo confidencial de credenciales y la conservación de contactos y seguidores existentes.</p>
+    <p><strong>Firma digital:</strong> <span id="rFirma"></span></p>
+  </section>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
